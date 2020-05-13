@@ -24,9 +24,18 @@ TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a53
 
 # Kernel
+BOARD_BOOT_HEADER_VERSION := 1
 BOARD_KERNEL_BASE := 0x10000000
+# Ignored on exynos, those are set by our bootloader and/or dtb/o
+BOARD_KERNEL_CMDLINE := androidboot.selinux=permissive androidboot.selinux=permissive
+BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 2048
-TARGET_PREBUILT_KERNEL := device/samsung/beyond2lte/prebuilt/Image
+TARGET_KERNEL_ARCH := arm64
+TARGET_KERNEL_CLANG_COMPILE := true
+TARGET_KERNEL_CLANG_VERSION := $(shell ls -d prebuilts/clang/host/linux-x86/clang-* | egrep -v 'clang-stable' | xargs -n1 basename | tail -1 | cut -d "-" -f2-)
+TARGET_KERNEL_CLANG_PATH := prebuilts/clang/host/linux-x86/clang-$(TARGET_KERNEL_CLANG_VERSION)
+TARGET_KERNEL_SOURCE := kernel/samsung/universal9820
+TARGET_KERNEL_CONFIG := exynos9820-beyond2lte_defconfig
 BOARD_INCLUDE_RECOVERY_DTBO := true
 BOARD_PREBUILT_DTBOIMAGE := device/samsung/beyond2lte/prebuilt/dtbo.img
 BOARD_MKBOOTIMG_ARGS := --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --tags_offset 0x00000100 --header_version 1
